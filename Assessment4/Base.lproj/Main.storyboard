@@ -196,6 +196,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="addDogToOwner:" destination="Iyy-aM-B6A" eventType="touchUpInside" id="l4K-aY-4Sm"/>
                                     <segue destination="ASl-yE-REU" kind="unwind" unwindAction="undwindFromAddDogViewController:" id="NBl-ym-c8G"/>
                                 </connections>
                             </button>

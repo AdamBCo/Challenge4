@@ -29,13 +29,14 @@
     self.breedTextField.text = dog.breed;
     self.colorTextField.text = dog.color;
 }
-
--(Dog *)addDogToOwner{
+- (IBAction)addDogToOwner:(id)sender {
     Dog *dog = [NSEntityDescription insertNewObjectForEntityForName:@"Dog" inManagedObjectContext:self.dogOwner.managedObjectContext];
     dog.name = self.nameTextField.text;
     dog.breed = self.breedTextField.text;
-    dog.color = self.breedTextField.text;
-    return dog;
+    dog.color = self.colorTextField.text;
+    [self.dogOwner addDogsObject:dog];
+    [self.dogOwner.managedObjectContext save:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

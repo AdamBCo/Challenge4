@@ -23,39 +23,20 @@
 {
     [super viewDidLoad];
     self.title = @"Dogs";
-    [self loadObjectsFromCoreData];
-    NSLog(@"DogOwner Name: %@", self.dogOwner.name);
-    NSLog(@"Has dogs: %lu", (unsigned long)self.dogOwner.dogs.count);
+    self.arrayOfDogs = [self.dogOwner.dogs allObjects];
+    NSLog(@"%lu", (unsigned long)self.dogOwner.dogs.count);
+    [self.dogsTableView reloadData];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    self.arrayOfDogs = [NSArray new];
-    [self loadObjectsFromCoreData];
-}
-
-- (void)loadObjectsFromCoreData{
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"Dog"];
-    request.predicate = [NSPredicate predicateWithFormat:@"owner=%@", self.dogOwner];
-    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-    NSLog(@"%@",request);
-    NSError *error = nil;
-    self.arrayOfDogs = [self.dogOwner.managedObjectContext executeFetchRequest:request error:&error];
-    NSLog(@"%lu have been added from Core Data",(unsigned long)self.arrayOfDogs.count);
-    if (error) NSLog(@"%@", error);
+    self.arrayOfDogs = [self.dogOwner.dogs allObjects];
+    NSLog(@"%@", self.dogOwner.name);
+    NSLog(@"%lu", (unsigned long)self.dogOwner.dogs.count);
     [self.dogsTableView reloadData];
-
-
 }
 
--(IBAction)undwindFromAddDogViewController:(UIStoryboardSegue *)segue{
-    AddDogViewController *viewController = segue.sourceViewController;
-    Dog *dog = [viewController addDogToOwner];
-    [self.dogOwner addDogsObject:dog];
-    [self.dogOwner.managedObjectContext save:nil];
-    [self loadObjectsFromCoreData];
-    
-}
+
 
 #pragma mark - UITableView Delegate Methods
 
@@ -87,7 +68,7 @@
         Dog *dog = [self.arrayOfDogs objectAtIndex:indexPath.row];
         [self.dogOwner removeDogsObject:dog];
         [self.dogOwner.managedObjectContext save:nil];
-        [self loadObjectsFromCoreData];
+        [self.dogsTableView reloadData];
     }
 }
 
@@ -95,10 +76,8 @@
 {
     if ([segue.identifier isEqualToString: @"AddDogSegue"])
     {
-        Person *owner = self.dogOwner;
         DogsViewController *viewController = segue.destinationViewController;
-        viewController.dogOwner = owner;
-        NSLog(@"DogOwner Name: %@", self.dogOwner.name);
+        viewController.dogOwner = self.dogOwner;
     }
     else if([segue.identifier isEqualToString:@""])
     {

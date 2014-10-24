@@ -24,6 +24,6 @@
 - (void)addDogs:(NSSet *)values;
 - (void)removeDogs:(NSSet *)values;
 
-+(instancetype)retrieveArrayOfOwnersWithCompletion:(void(^)(NSArray *))complete;
++(void)fetchPeople:(NSManagedObjectContext *)context completion:(void(^)(NSArray * returnedArray))completionHandler;
 
 @end
