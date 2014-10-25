@@ -68,6 +68,7 @@
         Dog *dog = [self.arrayOfDogs objectAtIndex:indexPath.row];
         [self.dogOwner removeDogsObject:dog];
         [self.dogOwner.managedObjectContext save:nil];
+        self.arrayOfDogs = [self.dogOwner.dogs allObjects];
         [self.dogsTableView reloadData];
     }
 }
